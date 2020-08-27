@@ -10,7 +10,7 @@ bleno.on('stateChange', function(state) {
   console.log('on -> stateChange: ' + state);
 
   if (state === 'poweredOn') {
-    bleno.startAdvertising('echo', ['ec00']);
+    bleno.startAdvertising('IntelOb-XXXXXXXX', ['ec00']);
   } else {
     bleno.stopAdvertising();
   }

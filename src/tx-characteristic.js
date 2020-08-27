@@ -26,7 +26,7 @@ TxCharacteristic.prototype.onReadRequest = function(offset, callback) {
 TxCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   this._value = data;
 
-  console.log('TxCharacteristic - onWriteRequest: value = ' + this._value.toString('hex'));
+  console.log('TxCharacteristic - onWriteRequest: value = ' + this._value.toString());
 
   if (this._updateValueCallback) {
     console.log('TxCharacteristic - onWriteRequest: notifying');
