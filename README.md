@@ -1,8 +1,7 @@
 # bleno-nus
 
-Tested on Mac 10.15.6 on 26 Aug 2020
 
-# install
+# install emulator on macbook
 npm i github:notjosh/bleno#inject-bindings
 
 npm i github:notjosh/bleno-mac
