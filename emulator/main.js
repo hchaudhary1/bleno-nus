@@ -9,7 +9,7 @@ var tx_hook = null;
 const TX_To_Phone = function() {
   TX_To_Phone.super_.call(this, {
     uuid: '6E400003-B5A3-F393-E0A9-E50E24DCCA9E',
-    properties: ['read', 'write', 'notify'],
+    properties: ['read', 'notify'],
     value: null
   });
 };
@@ -43,18 +43,12 @@ const tx_object = new TX_To_Phone();
 const RX_From_Phone = function() {
   RX_From_Phone.super_.call(this, {
     uuid: '6E400002-B5A3-F393-E0A9-E50E24DCCA9E',
-    properties: ['read', 'write', 'notify'],
+    properties: ['write'],
     value: null
   });
 };
 
 util.inherits(RX_From_Phone, BlenoCharacteristic);
-
-RX_From_Phone.prototype.onReadRequest = function(offset, callback) {
-  console.log('RX_From_Phone - onReadRequest: value = ' + this._value.toString('hex'));
-
-  callback(this.RESULT_SUCCESS, this._value);
-};
 
 RX_From_Phone.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   this._value = data;
@@ -69,26 +63,13 @@ RX_From_Phone.prototype.onWriteRequest = function(data, offset, withoutResponse,
 
   callback(this.RESULT_SUCCESS);
 };
-
-RX_From_Phone.prototype.onSubscribe = function(maxValueSize, updateValueCallback) {
-  console.log('RX_From_Phone - onSubscribe');
-
-  //this._updateValueCallback = updateValueCallback;
-};
-
-RX_From_Phone.prototype.onUnsubscribe = function() {
-  console.log('RX_From_Phone - onUnsubscribe');
-
-  //this._updateValueCallback = null;
-};
-
-
-
 const rx_object = new RX_From_Phone();
 
 
-console.log('bleno - nordic UART');
 
+
+
+console.log('bleno - nordic UART');
 
 
 bleno.on('stateChange', function(state) {
