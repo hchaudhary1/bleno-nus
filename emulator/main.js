@@ -50,15 +50,18 @@ const RX_From_Phone = function() {
 
 util.inherits(RX_From_Phone, BlenoCharacteristic);
 
+var myi = 0;
 RX_From_Phone.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   this._value = data;
 
-  console.log('RX_From_Phone - onWriteRequest: value = ' + this._value.toString());
+  console.log('RX_From_Phone - onWriteRequest: value = ' + this._value.toString('hex') + this._value.toString());
+
+
 
   if (tx_hook) {
     console.log('RX_From_Phone - onWriteRequest: notifying');
     
-    tx_hook(Buffer.from('bleno: rx cmd', 'utf8'));
+    tx_hook(Buffer.from('test' + myi++, 'utf8'));
   }
 
   callback(this.RESULT_SUCCESS);
