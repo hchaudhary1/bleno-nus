@@ -30,8 +30,8 @@ TxCharacteristic.prototype.onWriteRequest = function(data, offset, withoutRespon
 
   if (this._updateValueCallback) {
     console.log('TxCharacteristic - onWriteRequest: notifying');
-
-    this._updateValueCallback(this._value);
+    
+    this._updateValueCallback(Buffer.from('bleno: rx cmd', 'utf8'));
   }
 
   callback(this.RESULT_SUCCESS);
