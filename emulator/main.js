@@ -12,9 +12,6 @@ const RxCharacteristic = function() {
     properties: ['read', 'write', 'notify'],
     value: null
   });
-
-  this._value = new Buffer(0);
-  this._updateValueCallback = null;
 };
 
 util.inherits(RxCharacteristic, BlenoCharacteristic);
@@ -28,9 +25,6 @@ RxCharacteristic.prototype.onReadRequest = function(offset, callback) {
 RxCharacteristic.prototype.onSubscribe = function(maxValueSize, updateValueCallback) {
   console.log('RxCharacteristic - onSubscribe');
 
-  this._updateValueCallback = updateValueCallback;
-  //this._updateValueCallback
-
   tx_hook = updateValueCallback;
   tx_hook(Buffer.from('{"serial":123456}', 'utf8'));
 };
@@ -38,7 +32,7 @@ RxCharacteristic.prototype.onSubscribe = function(maxValueSize, updateValueCallb
 RxCharacteristic.prototype.onUnsubscribe = function() {
   console.log('RxCharacteristic - onUnsubscribe');
 
-  this._updateValueCallback = null;
+  tx_hook = null;
 };
 
 const rx = new RxCharacteristic();
@@ -52,9 +46,6 @@ const TxCharacteristic = function() {
     properties: ['read', 'write', 'notify'],
     value: null
   });
-
-  this._value = new Buffer(0);
-  this._updateValueCallback = null;
 };
 
 util.inherits(TxCharacteristic, BlenoCharacteristic);
@@ -70,7 +61,7 @@ TxCharacteristic.prototype.onWriteRequest = function(data, offset, withoutRespon
 
   console.log('TxCharacteristic - onWriteRequest: value = ' + this._value.toString());
 
-  if (this._updateValueCallback) {
+  if (tx_hook) {
     console.log('TxCharacteristic - onWriteRequest: notifying');
     
     tx_hook(Buffer.from('bleno: rx cmd', 'utf8'));
@@ -82,13 +73,13 @@ TxCharacteristic.prototype.onWriteRequest = function(data, offset, withoutRespon
 TxCharacteristic.prototype.onSubscribe = function(maxValueSize, updateValueCallback) {
   console.log('TxCharacteristic - onSubscribe');
 
-  this._updateValueCallback = updateValueCallback;
+  //this._updateValueCallback = updateValueCallback;
 };
 
 TxCharacteristic.prototype.onUnsubscribe = function() {
   console.log('TxCharacteristic - onUnsubscribe');
 
-  this._updateValueCallback = null;
+  //this._updateValueCallback = null;
 };
 
 
