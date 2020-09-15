@@ -5,6 +5,7 @@ const BlenoPrimaryService = bleno.PrimaryService;
 const BlenoCharacteristic = bleno.Characteristic;
 
 var tx_hook = null;
+var fake_time = 0;
 
 const TX_To_Phone = function() {
   TX_To_Phone.super_.call(this, {
@@ -50,19 +51,15 @@ const RX_From_Phone = function() {
 
 util.inherits(RX_From_Phone, BlenoCharacteristic);
 
-var myi = 0;
 RX_From_Phone.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
   this._value = data;
 
   console.log('RX_From_Phone - onWriteRequest: value = ' + this._value.toString('hex') + this._value.toString());
 
-
-
-  if (tx_hook) {
-    console.log('RX_From_Phone - onWriteRequest: notifying');
-    
-    tx_hook(Buffer.from('test' + myi++, 'utf8'));
-  }
+  // if (tx_hook) {
+  //   console.log('RX_From_Phone - onWriteRequest: notifying');
+  //   tx_hook(Buffer.from([0x19, 0x59, 0xF9, 0x12, 0x07, 0xD2, 0x3F, 0x31, 0x01, 0x5F, 0x60, 0x74, fake_time++, 0x02])); //compliant soap
+  // }
 
   callback(this.RESULT_SUCCESS);
 };
@@ -98,16 +95,26 @@ bleno.on('advertisingStart', function(error) {
       })
     ]);
   }
+
+
+
 });
 
 
 
 bleno.on('disconnect', function(clientAddress) {
   console.log(`disconnect:i${clientAddress}`)
+  tx_hook = null;
 });
 
 
+function send_fake_pkts() {
+  if (tx_hook){
+    console.log('sending packet');
+    tx_hook(Buffer.from([0x19, 0x59, 0xF9, 0x12, 0x07, 0xD2, 0x3F, 0x31, 0x01, 0x5F, 0x60, 0x74, fake_time++, 0x02])); //compliant soa
+  }
+}
 
-
+setInterval(send_fake_pkts, 1000);
 
 
