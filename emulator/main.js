@@ -108,10 +108,25 @@ bleno.on('disconnect', function(clientAddress) {
 });
 
 
+// Example, compliant soap:
+// 425326866		// my badge serial
+// 131219249		// reader serial
+// 1			// compliant
+// 1600156890		// epoch/unix time
+// 2			// soap
+
+// Hex
+// 19 59 F9 12
+// 07 D2 3F 31
+// 01
+// 5F 60 74 nn
+// 02
+
+
 function send_fake_pkts() {
   if (tx_hook){
     console.log('sending packet');
-    tx_hook(Buffer.from([0x19, 0x59, 0xF9, 0x12, 0x07, 0xD2, 0x3F, 0x31, 0x01, 0x5F, 0x60, 0x74, fake_time++, 0x02])); //compliant soa
+    tx_hook(Buffer.from([0x19, 0x59, 0xF9, 0x12, 0x07, 0xD2, 0x3F, 0x31, 0x01, 0x5F, 0x60, 0x74, fake_time++, 0x02])); //compliant soap
   }
 }
 
