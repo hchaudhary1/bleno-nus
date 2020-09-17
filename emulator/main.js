@@ -27,7 +27,7 @@ TX_To_Phone.prototype.onSubscribe = function(maxValueSize, updateValueCallback) 
   console.log('TX_To_Phone - onSubscribe');
 
   tx_hook = updateValueCallback;
-  tx_hook(Buffer.from('{"serial":123456}', 'utf8'));
+  tx_hook(Buffer.from([0x19, 0x59, 0xF9, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])); //serial number
 };
 
 TX_To_Phone.prototype.onUnsubscribe = function() {
