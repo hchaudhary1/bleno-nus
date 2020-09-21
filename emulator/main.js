@@ -70,6 +70,7 @@ const rx_object = new RX_From_Phone();
 
 
 console.log('bleno - nordic UART');
+process.env['BLENO_DEVICE_NAME'] = 'IntelOb-XXXXXXXX';
 
 
 bleno.on('stateChange', function(state) {
